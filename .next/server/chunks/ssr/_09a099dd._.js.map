@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/Phoei/Downloads/wics-hackathon/src/app/components/Header.jsx"],"sourcesContent":["import React from 'react'\r\nimport Image from \"next/image\";\r\n\r\nfunction Header() {\r\n    return (\r\n        <div className='p-5 flex justify-between items-center border shadow-md'>\r\n            <Image src={'./logo.svg'}\r\n            alt='logo'\r\n            width={50}\r\n            height={30}\r\n            />\r\n            <Button>Get Started</Button>\r\n        </div>\r\n    )\r\n}"],"names":[],"mappings":";;AAAA;AACA;;;;AAEA,SAAS;IACL,qBACI,8OAAC;QAAI,WAAU;;0BACX,8OAAC,6HAAA,CAAA,UAAK;gBAAC,KAAK;gBACZ,KAAI;gBACJ,OAAO;gBACP,QAAQ;;;;;;0BAER,8OAAC;0BAAO;;;;;;;;;;;;AAGpB","debugId":null}},
+    {"offset": {"line": 65, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/Phoei/Downloads/wics-hackathon/src/app/page.tsx"],"sourcesContent":["import React from 'react';\nimport Header from \"./components/Header\";\n\nexport default function Home() {\n  return (\n    <div>\n      <Header />\n      <h1>Home</h1>\n    </div>\n  );\n}\n"],"names":[],"mappings":";;;;AACA;;;AAEe,SAAS;IACtB,qBACE,8OAAC;;0BACC,8OAAC,mIAAA,CAAA,UAAM;;;;;0BACP,8OAAC;0BAAG;;;;;;;;;;;;AAGV","debugId":null}}]
+}
