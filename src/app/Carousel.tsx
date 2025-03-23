@@ -16,9 +16,10 @@ export default function CarouselDApiDemo() {
   const [count, setCount] = React.useState(0)
 
   const [income, setIncome] = React.useState(0)
-  const [rent, setRent] = React.useState(0)
-  const [bed, setBed] = React.useState(0)
-  const [bath, setBath] = React.useState(0)
+  const rent = ["1000", "2000", "3000", "4000", "5000"]
+  const bed = ["1", "2", "3", "4", "5"]
+  const bath = ["1", "2", "3", "4", "5"]
+
 
 
   React.useEffect(() => {
@@ -31,9 +32,6 @@ export default function CarouselDApiDemo() {
 
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1)
-      setRent(api.selectedScrollSnap() + 1)
-      setBed(api.selectedScrollSnap() + 1)
-      setBath(api.selectedScrollSnap() + 1)
 
     })
   }, [api])
@@ -61,15 +59,18 @@ export default function CarouselDApiDemo() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <div className="py-2 text-center text-sm text-muted-foreground">
+      <div className="py-2 text-center text-sm text-muted-foreground justify-center">
         House {current} of {count}
       </div>
-      <div className="py-2 text-center text-sm text-muted-foreground">
-        Rent {rent}
+      <div className="py-2 text-center text-sm text-muted-foreground justify-center">
+        Rent: {rent[current-1]}
       </div>
-      <div className="py-2 text-center text-sm text-muted-foreground">
-        Bed {bed}
+      <div className="py-2 text-center text-sm text-muted-foreground justify-center">
+        Bedroom/bedrooms: {bed[current-1]}
       </div>
+      <div className="py-2 text-center text-sm text-muted-foreground justify-center">
+        Bathrooms: {bath[current-1]}
+      </div>  
     </div>
   )
 }
