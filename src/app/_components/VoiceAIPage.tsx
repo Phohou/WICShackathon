@@ -4,11 +4,36 @@ import { useState, useEffect, useRef } from "react"
 import { Mic, MicOff, List, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from 'react-router-dom';
+import {vapi, startAssistant, stopAssistant} from "../ai"
 
 declare var webkitSpeechRecognition: any
 declare var SpeechRecognition: any
 
-export default function VoiceAIPage() {
+function VoiceAIPage() {
+    const [started, setStatred] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [assisntIsSpeaking, setAssistantIsSpeaking] = useState(false)
+    const [volumeLevel, setVolumeLevel] = useState(0)
+    const [callId, setcallId] = useState("")
+    const [callResult, setCallResult] = useState(null)
+    const [loadingResult, setLoadingResult] = useState(false)
+
+    useEffect(() => {
+      vapi.on("call-start", () => { 
+        setLoading(false)
+        setStatred(true)
+      }).on("call-end", () => {
+        setStatred(false)
+        setLoading(false)
+      }).on("speech-start", () => {
+        setAssistantIsSpeaking(true)
+      }).on("speech-end", () => {
+        setAssistantIsSpeaking(false)
+      }).on("volume-level", (level) => {
+        setVolumeLevel(level)
+      })
+    }, [])
+
     const [listening, setListening] = useState(false)
     const [speaking, setSpeaking] = useState(false)
     const [aiResponse, setAiResponse] = useState("")
@@ -17,45 +42,6 @@ export default function VoiceAIPage() {
     const recognitionRef = useRef<any>(null)
     const synthRef = useRef<SpeechSynthesis | null>(null)
   
-    useEffect(() => {
-      // Initialize speech recognition and synthesis
-      if (typeof window !== "undefined") {
-        synthRef.current = window.speechSynthesis
-  
-        if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
-          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-          recognitionRef.current = new SpeechRecognition()
-          recognitionRef.current.continuous = true
-          recognitionRef.current.interimResults = true
-  
-          recognitionRef.current.onresult = (event: any) => {
-            const current = event.resultIndex
-            const result = event.results[current]
-            const transcriptText = result[0].transcript
-  
-            if (result.isFinal) {
-              processUserInput(transcriptText)
-            }
-          }
-  
-          recognitionRef.current.onend = () => {
-            if (listening) {
-              recognitionRef.current?.start()
-            }
-          }
-        }
-      }
-  
-      return () => {
-        if (recognitionRef.current) {
-          recognitionRef.current.stop()
-        }
-        if (synthRef.current) {
-          synthRef.current.cancel()
-        }
-      }
-    }, [listening])
-  
     const toggleListening = () => {
       if (listening) {
         setListening(false)
@@ -63,82 +49,10 @@ export default function VoiceAIPage() {
       } else {
         setListening(true)
         recognitionRef.current?.start()
-        // Initial greeting
         if (Object.keys(userInfo).length === 0) {
           setTimeout(() => {
-            speakText("Hello! I'm your voice assistant. Tell me about yourself, and I'll remember what you share.")
           }, 1000)
         }
-      }
-    }
-  
-    const speakText = (text: string) => {
-      if (synthRef.current) {
-        setSpeaking(true)
-        setAiResponse(text)
-  
-        const utterance = new SpeechSynthesisUtterance(text)
-        utterance.onend = () => {
-          setSpeaking(false)
-        }
-  
-        synthRef.current.speak(utterance)
-      }
-    }
-  
-    const processUserInput = (input: string) => {
-      const lowerInput = input.toLowerCase()
-  
-      const nameMatch = lowerInput.match(/my name is (\w+)/i)
-      const ageMatch = lowerInput.match(/i am (\d+) years old/i)
-      const locationMatch = lowerInput.match(/i (live|am from) (\w+)/i)
-  
-      const newInfo = { ...userInfo }
-      let infoGathered = false
-  
-      if (nameMatch && nameMatch[1]) {
-        newInfo.name = nameMatch[1].charAt(0).toUpperCase() + nameMatch[1].slice(1)
-        infoGathered = true
-      }
-  
-      if (ageMatch && ageMatch[1]) {
-        newInfo.age = ageMatch[1]
-        infoGathered = true
-      }
-  
-      if (locationMatch && locationMatch[2]) {
-        newInfo.location = locationMatch[2].charAt(0).toUpperCase() + locationMatch[2].slice(1)
-        infoGathered = true
-      }
-  
-      setUserInfo(newInfo)
-  
-      if (infoGathered) {
-        const responses = [
-          "Thanks for sharing that information with me.",
-          "I've noted that down.",
-          "I'll remember that about you.",
-          "Got it! I've updated your profile.",
-        ]
-  
-        const randomResponse = responses[Math.floor(Math.random() * responses.length)]
-        speakText(randomResponse)
-      } else if (lowerInput.includes("what do you know about me")) {
-        if (Object.keys(newInfo).length > 0) {
-          let knowledgeResponse = "Here's what I know about you: "
-  
-          if (newInfo.name) knowledgeResponse += `Your name is ${newInfo.name}. `
-          if (newInfo.age) knowledgeResponse += `You are ${newInfo.age} years old. `
-          if (newInfo.location) knowledgeResponse += `You live in ${newInfo.location}. `
-  
-          speakText(knowledgeResponse)
-        } else {
-          speakText("I don't know anything about you yet. Please share some information with me.")
-        }
-      } else if (lowerInput.includes("hello") || lowerInput.includes("hi")) {
-        speakText("Hello! I'm listening. Tell me about yourself.")
-      } else {
-        speakText("I heard you. How can I help?")
       }
     }
   
@@ -151,6 +65,17 @@ export default function VoiceAIPage() {
     const handleClick = () => {
         navigate('/loading.tsx'); 
     };
+
+    const handleStart = async () => {
+      setLoading(true)
+      const data = await startAssistant()
+      setcallId(data.id)
+    }
+
+    const handleStop = () => {
+      stopAssistant()
+      //get call details
+    }
 
     return (
       <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -184,7 +109,7 @@ export default function VoiceAIPage() {
   
               <div className="flex gap-4">
                 <Button
-                  onClick={toggleListening}
+                  onClick={handleStart}
                   className={`rounded-full w-16 h-16 ${listening ? "bg-red-500 hover:bg-red-600" : "bg-primary hover:bg-primary/90"}`}
                   size="icon"
                 >
@@ -238,3 +163,4 @@ export default function VoiceAIPage() {
     )
   }
   
+  export default VoiceAIPage
