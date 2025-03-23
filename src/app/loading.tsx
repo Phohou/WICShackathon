@@ -31,7 +31,7 @@ export default function Home() {
         <LoadingScreen />
       ) : (
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Welcome!</h1>
+          <h1 className="text-4xl font-bold mb-4">Here are some houses that fit your interests!</h1>
           <Carousel />
         </div>
       )}

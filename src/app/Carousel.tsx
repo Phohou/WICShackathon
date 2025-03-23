@@ -15,6 +15,12 @@ export default function CarouselDApiDemo() {
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
 
+  const [income, setIncome] = React.useState(0)
+  const [rent, setRent] = React.useState(0)
+  const [bed, setBed] = React.useState(0)
+  const [bath, setBath] = React.useState(0)
+
+
   React.useEffect(() => {
     if (!api) {
       return
@@ -25,6 +31,10 @@ export default function CarouselDApiDemo() {
 
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1)
+      setRent(api.selectedScrollSnap() + 1)
+      setBed(api.selectedScrollSnap() + 1)
+      setBath(api.selectedScrollSnap() + 1)
+
     })
   }, [api])
 
@@ -36,7 +46,13 @@ export default function CarouselDApiDemo() {
             <CarouselItem key={index}>
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <span className="text-4xl font-semibold">{index + 1}</span>
+                  <span className="text-4xl font-semibold">{        
+                    <img
+                    src={'/test.jpg'}
+                    alt={`Slide ${index + 1} Image`}
+                    className="w-full h-full object-cover rounded-lg"
+                  />}
+                 </span>
                 </CardContent>
               </Card>
             </CarouselItem>
@@ -46,7 +62,13 @@ export default function CarouselDApiDemo() {
         <CarouselNext />
       </Carousel>
       <div className="py-2 text-center text-sm text-muted-foreground">
-        Slide {current} of {count}
+        House {current} of {count}
+      </div>
+      <div className="py-2 text-center text-sm text-muted-foreground">
+        Rent {rent}
+      </div>
+      <div className="py-2 text-center text-sm text-muted-foreground">
+        Bed {bed}
       </div>
     </div>
   )

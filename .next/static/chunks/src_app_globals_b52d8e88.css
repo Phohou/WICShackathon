@@ -421,6 +421,10 @@
     height: 1.2rem;
   }
 
+  .h-full {
+    height: 100%;
+  }
+
   .h-px {
     height: 1px;
   }
@@ -725,6 +729,10 @@
 
   .fill-current {
     fill: currentColor;
+  }
+
+  .object-cover {
+    object-fit: cover;
   }
 
   .p-1 {
