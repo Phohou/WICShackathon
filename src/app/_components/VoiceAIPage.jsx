@@ -163,7 +163,7 @@ export default function VoiceAIPage() {
       <main className="flex min-h-screen flex-col items-center justify-center p-4">
         <div className="max-w-md w-full">
             <div className="flex flex-col items-center">
-              <h1 className="text-3xl font-bold mb-8">NestCents Voice AI</h1>
+              <h1 className="text-3xl font-bold mb-8">NestCents Voice</h1>
   
               <div
                 className={`speech-bubble relative p-5 rounded-2xl mb-8 w-full transition-all duration-300 ${speaking ? "bg-primary/10" : ""}`}
