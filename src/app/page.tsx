@@ -3,9 +3,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from "./_components/Header";
-import Dropdown from "./_components/Dropdown";
-import VoiceRes from "./_components/VoiceRes";
 import Loading from "./loading"; // Import the new page
+import VoiceAIPage from './_components/VoiceAIPage';
 
 export default function Home() {
   return (
@@ -13,10 +12,9 @@ export default function Home() {
       <div className="App">
         <Header />
         <Routes>
-          <Route path="/" element={<VoiceRes />} />
+          <Route path="/" element={<VoiceAIPage />} />
           <Route path="/loading.tsx" element={<Loading />} />
         </Routes>
-        <Dropdown />
       </div>
     </Router>
   );
