@@ -139,7 +139,7 @@ export default function VoiceAIPage() {
       } else {
         setListening(true)
         callActive = true;
-        vapi.start(assistantOptions);
+        vapi.start("a82827c7-bdef-4762-a82b-9b64e642a2e4");
         if (Object.keys(userInfo).length === 0) {
           setTimeout(() => {}, 1000)
         }
@@ -157,58 +157,7 @@ export default function VoiceAIPage() {
     };
 
 
-    var vapiInstance = null;
-    const assistant = "a82827c7-bdef-4762-a82b-9b64e642a2e4"; // Substitute with your assistant ID
-    const apiKey = "42b3d91d-dcf1-40af-ad12-ccb17a1316ad"; // Substitute with your Public key from Vapi Dashboard.
-    const buttonConfig = {
-      position: "bottom-right", // "bottom" | "top" | "left" | "right" | "top-right" | "top-left" | "bottom-left" | "bottom-right"
-      offset: "40px", // decide how far the button should be from the edge
-      width: "50px", // min-width of the button
-      height: "50px", // height of the button
-      idle: {
-        // button state when the call is not active.
-        color: `rgb(255, 20, 147)`, // bright pink color
-        type: "pill", // or "round"
-        title: "Have a quick question?", // only required in case of Pill
-        subtitle: "Talk with our AI assistant", // only required in case of pill
-        icon: `https://unpkg.com/lucide-static@0.321.0/icons/phone.svg`,
-      },
-      loading: {
-        // button state when the call is connecting
-        color: `rgb(93, 124, 202)`,
-        type: "pill", // or "round"
-        title: "Connecting...", // only required in case of Pill
-        subtitle: "Please wait", // only required in case of pill
-        icon: `https://unpkg.com/lucide-static@0.321.0/icons/loader-2.svg`,
-      },
-      active: {
-        // button state when the call is in progress or active.
-        color: `rgb(255, 0, 0)`,
-        type: "pill", // or "round"
-        title: "Call is in progress...", // only required in case of Pill
-        subtitle: "End the call.", // only required in case of pill
-        icon: `https://unpkg.com/lucide-static@0.321.0/icons/phone-off.svg`,
-      },
-    };
-    
 
-    (function (d, t) {
-      var g = document.createElement(t),
-        s = d.getElementsByTagName(t)[0];
-      g.src =
-        "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-      g.defer = true;
-      g.async = true;
-      s.parentNode.insertBefore(g, s);
-
-      g.onload = function () {
-        vapiInstance = window.vapiSDK.run({
-          apiKey: apiKey, // mandatory
-          assistant: assistant, // mandatory
-          config: buttonConfig, // optional 
-        });
-      };
-    })(document, "script");
 
     return (
       <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -241,7 +190,13 @@ export default function VoiceAIPage() {
               </div>
   
               <div className="callVapi flex gap-4">
-
+                <Button
+                  onClick={toggleListening}
+                  className={`rounded-full w-16 h-16 ${listening ? "bg-red-500 hover:bg-red-600" : "bg-primary hover:bg-primary/90"}`}
+                  size="icon"
+                >
+                  {listening ? <MicOff className="h-8 w-8" /> : <Mic className="h-8 w-8" />}
+                </Button>
 
                 <Button
                   onClick={toggleProperties}
@@ -262,6 +217,7 @@ export default function VoiceAIPage() {
                   className="rounded-full h-16 w-16"
                   size="icon"
                   >
+                  <ChevronUp className="h-6 w-6" />
                   </Button>
               </div>
   

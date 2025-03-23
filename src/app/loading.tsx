@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Carousel from "@/app/Carousel"
 import LoadingScreen from "@/components/ui/loading-screen"
 
 export default function Home() {
@@ -30,8 +31,8 @@ export default function Home() {
         <LoadingScreen />
       ) : (
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Welcome!</h1>
-          <p className="text-xl">Data has been loaded successfully.</p>
+          <h1 className="text-4xl font-bold mb-4">Here are some houses that fit your interests!</h1>
+          <Carousel />
         </div>
       )}
     </main>
